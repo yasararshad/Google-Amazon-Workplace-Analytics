@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Mohammad Yasar Arshad" />
+
+<meta name="date" content="2017-06-12" />
+
+<title>Google vs Amazon</title>
+
+<script src="GooglevsAmazon_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="GooglevsAmazon_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="GooglevsAmazon_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="GooglevsAmazon_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="GooglevsAmazon_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="GooglevsAmazon_files/navigation-1.1/tabsets.js"></script>
+<link href="GooglevsAmazon_files/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="GooglevsAmazon_files/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Google vs Amazon</h1>
+<h4 class="author"><em>Mohammad Yasar Arshad</em></h4>
+<h4 class="date"><em>June 12, 2017</em></h4>
+
+</div>
+
+
+<div id="load-the-required-packages" class="section level2">
+<h2>1 <strong>Load the required packages</strong></h2>
+<pre class="r"><code>library(tm)</code></pre>
+<pre><code>## Loading required package: NLP</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(SnowballC)
+library(RCurl)</code></pre>
+<pre><code>## Loading required package: bitops</code></pre>
+<pre class="r"><code>library(qdap)</code></pre>
+<pre><code>## Loading required package: qdapDictionaries</code></pre>
+<pre><code>## Loading required package: qdapRegex</code></pre>
+<pre><code>## 
+## Attaching package: &#39;qdapRegex&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     escape, explain</code></pre>
+<pre><code>## Loading required package: qdapTools</code></pre>
+<pre><code>## 
+## Attaching package: &#39;qdapTools&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     id</code></pre>
+<pre><code>## Loading required package: RColorBrewer</code></pre>
+<pre><code>## 
+## Attaching package: &#39;qdap&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     %&gt;%</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tm&#39;:
+## 
+##     as.DocumentTermMatrix, as.TermDocumentMatrix</code></pre>
+<pre><code>## The following object is masked from &#39;package:NLP&#39;:
+## 
+##     ngrams</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     Filter</code></pre>
+<pre class="r"><code>library(wordcloud)
+library(RWeka)
+library(plotly)</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;ggplot2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:qdapRegex&#39;:
+## 
+##     %+%</code></pre>
+<pre><code>## The following object is masked from &#39;package:NLP&#39;:
+## 
+##     annotate</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     last_plot</code></pre>
+<pre><code>## The following object is masked from &#39;package:qdap&#39;:
+## 
+##     %&gt;%</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     layout</code></pre>
+<pre class="r"><code>library(reshape2)</code></pre>
+</div>
+<div id="load-the-dataset" class="section level2">
+<h2>2 <strong>Load the dataset</strong></h2>
+<pre class="r"><code>amazon_url &lt;-
+getURL(
+&#39;http://s3.amazonaws.com/assets.datacamp.com/production/course_935/datasets/500_amzn.csv&#39;,
+ssl.verifyhost = FALSE,
+ssl.verifypeer = FALSE
+)
+amazon &lt;- read.csv(textConnection(amazon_url), header = TRUE)
+
+
+
+google_url &lt;-
+getURL(
+&#39;http://s3.amazonaws.com/assets.datacamp.com/production/course_935/datasets/500_goog.csv&#39;,
+ssl.verifyhost = FALSE,
+ssl.verifypeer = FALSE
+)
+google &lt;- read.csv(textConnection(google_url), header = TRUE)</code></pre>
+<div id="amazon-pros" class="section level4">
+<h4><strong>Amazon Pros</strong></h4>
+<pre class="r"><code>amzn_pros &lt;- amazon$pros
+amzn_pros &lt;- amzn_pros[!is.na(amzn_pros)]</code></pre>
+</div>
+<div id="amazon-cons" class="section level4">
+<h4><strong>Amazon Cons</strong></h4>
+<pre class="r"><code>amzn_cons &lt;- amazon$cons
+amzn_cons &lt;- amzn_cons[!is.na(amzn_cons)]</code></pre>
+</div>
+<div id="google-pros" class="section level4">
+<h4><strong>Google Pros</strong></h4>
+<pre class="r"><code>goog_pros &lt;- google$pros
+goog_pros &lt;- goog_pros[!is.na(goog_pros)]</code></pre>
+</div>
+<div id="google-cons" class="section level4">
+<h4><strong>Google Cons</strong></h4>
+<pre class="r"><code>goog_cons &lt;- google$cons
+goog_cons &lt;- goog_cons[!is.na(goog_cons)]</code></pre>
+</div>
+</div>
+<div id="create-the-cleaning-and-word-cloud-functions" class="section level2">
+<h2>3 <strong>Create the cleaning and Word Cloud Functions</strong></h2>
+<pre class="r"><code>#STEP 1: qdap_clean function
+
+qdap_clean &lt;- function(x) {
+  x &lt;- replace_number(x)
+  x &lt;- replace_symbol(x)
+  x &lt;- replace_abbreviation(x)
+  x &lt;- replace_contraction(x)
+  x &lt;- replace_ordinal(x)
+  x &lt;- tolower(x)
+  return(x)
+}
+
+
+# STEP 2: Corpus cleaning function using &quot;tm&quot;
+
+
+tm_clean &lt;- function(corpus) {
+  corpus&lt;- tm_map(corpus, removePunctuation)
+  corpus &lt;- tm_map(corpus, stripWhitespace)
+  corpus &lt;- tm_map(corpus, removeWords,
+                   c(stopwords(&quot;en&quot;), &quot;Google&quot;,&quot;google&quot;,&quot;amazon&quot;, &quot;Amazon&quot;,&quot;company&quot;))
+  return(corpus)
+}
+
+
+create_wordcloud = function(corpus, color) 
+{
+  pal = brewer.pal(n = 7, name = color)
+  tokenizer = function(x) {NGramTokenizer(x, Weka_control(min = 2, max = 2))}
+  corpus_tdm = TermDocumentMatrix(corpus, control = list(tokenize = tokenizer))
+  corpus_tdm = removeSparseTerms(x = corpus_tdm, sparse = 0.99)
+  corpus_tdm = as.data.frame(as.matrix(corpus_tdm))
+  corpus_tdm_freq = rowSums(corpus_tdm)
+  return(wordcloud(names(corpus_tdm_freq), freq = corpus_tdm_freq, scale = c(3.0, 1.0), colors = pal, min.freq = 3) )
+}</code></pre>
+</div>
+<div id="create-corpus" class="section level2">
+<h2>4 <strong>Create Corpus </strong></h2>
+<pre class="r"><code>amzn_pros_corp &lt;- tm_clean(VCorpus(VectorSource(qdap_clean(amzn_pros))))
+
+amzn_cons_corp &lt;- tm_clean(VCorpus(VectorSource(qdap_clean(amzn_cons))))
+
+goog_pros_corp &lt;- tm_clean(VCorpus(VectorSource(qdap_clean(goog_pros))))
+
+goog_cons_corp &lt;- tm_clean(VCorpus(VectorSource(qdap_clean(goog_cons))))</code></pre>
+</div>
+<div id="create-wordclouds" class="section level2">
+<h2>5 <strong>Create Wordclouds</strong></h2>
+<div id="a-amazon-pros-wordcloud" class="section level3">
+<h3>5a Amazon Pros Wordcloud</h3>
+<pre class="r"><code>create_wordcloud(corpus = amzn_pros_corp, color = &quot;Dark2&quot;)</code></pre>
+<pre><code>## Warning in wordcloud(names(corpus_tdm_freq), freq = corpus_tdm_freq, scale
+## = c(3, : place work could not be fit on page. It will not be plotted.</code></pre>
+<pre><code>## Warning in wordcloud(names(corpus_tdm_freq), freq = corpus_tdm_freq, scale
+## = c(3, : great place could not be fit on page. It will not be plotted.</code></pre>
+<pre><code>## Warning in wordcloud(names(corpus_tdm_freq), freq = corpus_tdm_freq, scale
+## = c(3, : work hours could not be fit on page. It will not be plotted.</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-9-1.png" /><!-- --></p>
+</div>
+<div id="b-amazon-cons-wordcloud" class="section level3">
+<h3>5b Amazon Cons Wordcloud</h3>
+<pre class="r"><code>create_wordcloud(corpus = amzn_cons_corp, color = &quot;Dark2&quot;)</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-10-1.png" /><!-- --></p>
+</div>
+<div id="c-google-pros-wordcloud" class="section level3">
+<h3>5c Google Pros Wordcloud</h3>
+<pre class="r"><code>create_wordcloud(corpus = goog_pros_corp, color = &quot;Dark2&quot;)</code></pre>
+<pre><code>## Warning in wordcloud(names(corpus_tdm_freq), freq = corpus_tdm_freq, scale
+## = c(3, : smart people could not be fit on page. It will not be plotted.</code></pre>
+<pre><code>## Warning in wordcloud(names(corpus_tdm_freq), freq = corpus_tdm_freq, scale
+## = c(3, : place work could not be fit on page. It will not be plotted.</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-11-1.png" /><!-- --></p>
+</div>
+<div id="d-google-cons-wordcloud" class="section level3">
+<h3>5d Google Cons Wordcloud</h3>
+<pre class="r"><code>create_wordcloud(corpus = goog_cons_corp, color = &quot;Dark2&quot;)</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-12-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="create-comparison-cloud" class="section level2">
+<h2>6 <strong>Create Comparison Cloud</strong></h2>
+<div id="a-clean-the-text-using-qdap-function" class="section level3">
+<h3>6a Clean the text using qdap function</h3>
+<pre class="r"><code>amzn_pros_cc &lt;- qdap_clean(amzn_pros)
+amzn_cons_cc &lt;- qdap_clean(amzn_cons)
+goog_pros_cc &lt;- qdap_clean(goog_pros)
+goog_cons_cc &lt;- qdap_clean(goog_cons)</code></pre>
+</div>
+<div id="b-merge-the-pros-and-cons-for-comparison" class="section level3">
+<h3>6b Merge the pros and cons for comparison</h3>
+<pre class="r"><code>amznproscc &lt;- paste(amzn_pros_cc, collapse = &quot;&quot;)
+amznconscc &lt;- paste(amzn_cons_cc, collapse=&quot;&quot;)
+googproscc &lt;- paste(goog_pros_cc, collapse= &quot;&quot;)
+googconscc &lt;- paste(goog_cons_cc, collapse= &quot;&quot;)
+amzn_all &lt;- c(amznproscc, amznconscc)
+goog_all &lt;- c(googproscc, googconscc)</code></pre>
+</div>
+<div id="c.-clean-the-corpus-create-tdm-and-create-matrix-for-comparison-cloud" class="section level3">
+<h3>6c. Clean the Corpus, Create TDM and create matrix for comparison cloud</h3>
+<pre class="r"><code>amzn_all_clean &lt;- tm_clean(VCorpus(VectorSource(amzn_all)))
+goog_all_clean &lt;- tm_clean(VCorpus(VectorSource(goog_all)))
+
+amzn_all_tdm &lt;- TermDocumentMatrix(amzn_all_clean)
+goog_all_tdm &lt;- TermDocumentMatrix(goog_all_clean)
+
+colnames(amzn_all_tdm) &lt;- c(&quot;Amzn_Pros&quot;, &quot;Amzn_Cons&quot;)
+colnames(goog_all_tdm) &lt;- c(&quot;Goog_Pros&quot;, &quot;Goog_Cons&quot;)
+amzn_all_m &lt;- as.matrix(amzn_all_tdm)
+goog_all_m &lt;- as.matrix(goog_all_tdm)</code></pre>
+</div>
+<div id="d-comparison-cloud-for-amazon" class="section level3">
+<h3>6d Comparison Cloud for Amazon</h3>
+<pre class="r"><code>comparison.cloud(amzn_all_m, colors = c(&quot;#F44336&quot;, &quot;#2196f3&quot;), max.words = 100)</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-16-1.png" /><!-- --></p>
+</div>
+<div id="e-comparison-cloud-for-google" class="section level3">
+<h3>6e Comparison Cloud for Google</h3>
+<pre class="r"><code>comparison.cloud(goog_all_m, colors = c(&quot;#F44336&quot;, &quot;#2196f3&quot;), max.words = 100)</code></pre>
+<pre><code>## Warning in comparison.cloud(goog_all_m, colors = c(&quot;#F44336&quot;, &quot;#2196f3&quot;), :
+## environment could not be fit on page. It will not be plotted.</code></pre>
+<pre><code>## Warning in comparison.cloud(goog_all_m, colors = c(&quot;#F44336&quot;, &quot;#2196f3&quot;), :
+## interesting could not be fit on page. It will not be plotted.</code></pre>
+<pre><code>## Warning in comparison.cloud(goog_all_m, colors = c(&quot;#F44336&quot;, &quot;#2196f3&quot;), :
+## compensation could not be fit on page. It will not be plotted.</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-17-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="common-bigram-word-analysis" class="section level2">
+<h2>7 <strong>Common Bigram Word Analysis</strong></h2>
+<div id="a-prepare-the-data" class="section level3">
+<h3>7a Prepare the data</h3>
+<pre class="r"><code>amzn_pros_df &lt;- data.frame(text=unlist(sapply(amzn_pros_corp, &#39;[&#39;,&quot;content&quot;)),stringsAsFactors=F)
+token_delim &lt;- &quot; \\t\\r\\n.!?,;\&quot;()&quot;
+bi_amzn_pros &lt;- NGramTokenizer(amzn_pros_df, Weka_control(min=2,max=2, delimiters = token_delim))
+bi_amzn_pros_df &lt;- data.frame(table(bi_amzn_pros))
+
+
+amzn_cons_df &lt;- data.frame(text=unlist(sapply(amzn_cons_corp, &#39;[&#39;,&quot;content&quot;)),stringsAsFactors=F)
+token_delim &lt;- &quot; \\t\\r\\n.!?,;\&quot;()&quot;
+bi_amzn_cons &lt;- NGramTokenizer(amzn_cons_df, Weka_control(min=2,max=2, delimiters = token_delim))
+bi_amzn_cons_df &lt;- data.frame(table(bi_amzn_cons))
+
+goog_pros_df &lt;- data.frame(text=unlist(sapply(goog_pros_corp, &#39;[&#39;,&quot;content&quot;)),stringsAsFactors=F)
+token_delim &lt;- &quot; \\t\\r\\n.!?,;\&quot;()&quot;
+bi_goog_pros &lt;- NGramTokenizer(goog_pros_df, Weka_control(min=2,max=2))
+bi_goog_pros_df &lt;- data.frame(table(bi_goog_pros))
+
+
+goog_cons_df &lt;- data.frame(text=unlist(sapply(goog_cons_corp, &#39;[&#39;,&quot;content&quot;)),stringsAsFactors=F)
+token_delim &lt;- &quot; \\t\\r\\n.!?,;\&quot;()&quot;
+bi_goog_cons &lt;- NGramTokenizer(goog_cons_df, Weka_control(min=2,max=2, delimiters = token_delim))
+bi_goog_cons_df &lt;- data.frame(table(bi_goog_cons))</code></pre>
+</div>
+<div id="b-top-5-common-bigram-words-in-pros-reviews" class="section level3">
+<h3>7b Top 5 common bigram words in Pros reviews</h3>
+<pre class="r"><code>all_pros_df &lt;- left_join(bi_amzn_pros_df,bi_goog_pros_df, by=c(&quot;bi_amzn_pros&quot; = &quot;bi_goog_pros&quot;),stringsAsFactors=F)</code></pre>
+<pre><code>## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factors with different levels, coercing to character vector</code></pre>
+<pre class="r"><code>colnames(all_pros_df) &lt;-c(&quot;Term&quot;,&quot;Amazon_Pros&quot; ,&quot;Google_Pros&quot;) 
+all_pros_df &lt;- na.omit(all_pros_df)
+all_pros_df$Total &lt;-(all_pros_df[, 2] +all_pros_df[, 3])
+all_pros_total &lt;- all_pros_df %&gt;% arrange(desc(Total)) %&gt;% head(5)
+
+all_pros_total_m &lt;- 
+  melt(all_pros_total, id.vars = (&quot;Term&quot;), measure.vars = 
+         c(&quot;Amazon_Pros&quot;, &quot;Google_Pros&quot;), variable.names= 
+         &quot;Pros&quot;, value.name = &quot;Response&quot;)
+all_pros_total_m$Term &lt;- factor(all_pros_total_m$Term, levels = all_pros_total$Term)
+
+ggplot(all_pros_total_m, aes(x = Term, y = Response, group = variable)) + 
+  geom_col(aes(fill=variable)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.25)) +
+  geom_text(aes(label = Response), position = position_stack(vjust = .5), size = 3)  # labels inside the bar segments</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-19-1.png" /><!-- --></p>
+</div>
+<div id="c-top-5-common-bigram-words-in-cons-reviews" class="section level3">
+<h3>7c Top 5 common bigram words in Cons reviews</h3>
+<pre class="r"><code>all_cons_df &lt;-left_join(bi_amzn_cons_df,bi_goog_cons_df, by=c(&quot;bi_amzn_cons&quot; = &quot;bi_goog_cons&quot;),stringsAsFactors=F) #to find out the common words between two companies</code></pre>
+<pre><code>## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factors with different levels, coercing to character vector</code></pre>
+<pre class="r"><code>colnames(all_cons_df) &lt;-c(&quot;Term&quot;,&quot;Amazon_Cons&quot; ,&quot;Google_Cons&quot;) 
+all_cons_df &lt;- na.omit(all_cons_df) # 
+all_cons_df$Total &lt;-(all_cons_df[, 2] +all_cons_df[, 3])
+all_cons_total &lt;- all_cons_df %&gt;% arrange(desc(Total)) %&gt;% head(5)
+
+all_cons_total_m &lt;- 
+  melt(all_cons_total, id.vars = (&quot;Term&quot;), measure.vars = 
+         c(&quot;Amazon_Cons&quot;, &quot;Google_Cons&quot;), variable.names= 
+         &quot;Pros&quot;, value.name = &quot;Response&quot;)
+all_cons_total_m$Term &lt;- factor(all_cons_total_m$Term, levels = all_cons_total$Term)
+
+ggplot(all_cons_total_m, aes(x = Term, y = Response, group = variable)) + 
+  geom_col(aes(fill=variable)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.25)) +
+  geom_text(aes(label = Response), position = position_stack(vjust = .5), size = 3)  # labels inside the bar segments</code></pre>
+<p><img src="GooglevsAmazon_files/figure-html/unnamed-chunk-20-1.png" /><!-- --></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
